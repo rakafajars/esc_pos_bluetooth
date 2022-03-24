@@ -55,7 +55,7 @@ class PrinterBluetoothManager {
     _isScanningSubscription =
         _bluetoothManager.isScanning.listen((isScanningCurrent) async {
       // If isScanning value changed (scan just stopped)
-      if (_isScanning.value! && !isScanningCurrent) {
+      if ((_isScanning.value ?? false) && !isScanningCurrent) {
         _scanResultsSubscription!.cancel();
         _isScanningSubscription!.cancel();
       }
