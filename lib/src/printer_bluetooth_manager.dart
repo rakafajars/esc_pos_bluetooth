@@ -32,8 +32,8 @@ class PrinterBluetoothManager {
   StreamSubscription? _isScanningSubscription;
   PrinterBluetooth? _selectedPrinter;
 
-  final BehaviorSubject<bool> _isScanning = BehaviorSubject.seeded(false);
-  Stream<bool> get isScanningStream => _isScanning.stream;
+  final BehaviorSubject<bool>? _isScanning = BehaviorSubject.seeded(false);
+  Stream<bool>? get isScanningStream => _isScanning?.stream;
 
   final BehaviorSubject<List<PrinterBluetooth>> _scanResults =
       BehaviorSubject.seeded([]);
@@ -55,11 +55,11 @@ class PrinterBluetoothManager {
     _isScanningSubscription =
         _bluetoothManager.isScanning.listen((isScanningCurrent) async {
       // If isScanning value changed (scan just stopped)
-      if ((_isScanning.value ?? false) && !isScanningCurrent) {
+      if ((_isScanning?.value ?? false) && !isScanningCurrent) {
         _scanResultsSubscription!.cancel();
         _isScanningSubscription!.cancel();
       }
-      _isScanning.add(isScanningCurrent);
+      _isScanning?.add(isScanningCurrent);
     });
   }
 
@@ -81,7 +81,7 @@ class PrinterBluetoothManager {
     const int timeout = 5;
     if (_selectedPrinter == null) {
       return Future<PosPrintResult>.value(PosPrintResult.printerNotSelected);
-    } else if (_isScanning.value!) {
+    } else if ((_isScanning?.value ?? false)) {
       return Future<PosPrintResult>.value(PosPrintResult.scanInProgress);
     } else if (_isPrinting) {
       return Future<PosPrintResult>.value(PosPrintResult.printInProgress);
